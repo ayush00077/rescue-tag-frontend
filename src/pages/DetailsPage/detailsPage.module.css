@@ -19,3 +19,7 @@
 .input_field{
     margin-bottom: 20px;
 }
+.button_section{
+    align-items: right;
+    text-align: right;
+}

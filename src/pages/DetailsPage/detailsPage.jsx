@@ -11,12 +11,14 @@ import {
 import React from "react";
 import style from "./detailsPage.module.css";
 import InputText from "../../components/inputComponent/InputText";
+import CustomButton from "../../components/CustomButton/customButton";
 
 export default function DetailsPage() {
   return (
     <Stack>
+      
       <Card className={style.userName_section}>
-          Basic Details
+        Basic Details
         <Divider />
         <CardContent>
           <Grid container>
@@ -49,7 +51,7 @@ export default function DetailsPage() {
               </div>
             </Grid>
             <Grid item xs>
-            <div className={style.input_field}>
+              <div className={style.input_field}>
                 <div className={style.input_title}>User name</div>
                 <InputText
                   placeHolder={"If you have another name"}
@@ -62,7 +64,7 @@ export default function DetailsPage() {
         </CardContent>
       </Card>
       <Card className={style.userName_section}>
-          Contact Details
+        Contact Details
         <Divider />
         <CardContent>
           <Grid container>
@@ -108,7 +110,7 @@ export default function DetailsPage() {
         </CardContent>
       </Card>
       <Card className={style.userName_section}>
-          Emergency Details
+        Emergency Details
         <Divider />
         <CardContent>
           <Grid container>
@@ -151,8 +153,13 @@ export default function DetailsPage() {
               </div>
             </Grid>
           </Grid>
+          <div className={style.button_section}>
+         <CustomButton type="submit" variant="outlined">Save</CustomButton>
+      </div>
         </CardContent>
+        
       </Card>
+     
     </Stack>
   );
 }
