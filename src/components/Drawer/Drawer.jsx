@@ -41,6 +41,12 @@ export default function DrawerComponent(props) {
       icon: <AddBoxRoundedIcon />,
       link: ROUTE_PATH.DETAILS,
     },
+    {
+      id: 3,
+      name: "Public Profile",
+      icon: <AddBoxRoundedIcon />,
+      link: ROUTE_PATH.PROFILE,
+    },
   ];
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);

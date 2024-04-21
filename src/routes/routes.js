@@ -1,12 +1,14 @@
 import React from "react";
 import AppLayout from "../layout/appLayout";
 import DetailsPage from "../pages/DetailsPage/detailsPage";
+import PublicProfilepage from "../pages/PublicProfilePage/publicProfilepage";
 
 const HomeLayout = React.lazy(() => import("../layout/homeLayout"));
 const LoginPage = React.lazy(() => import("../pages/loginPage"));
 const SignUpPage = React.lazy(() => import("../pages/signUpPage"));
 const HomePage = React.lazy(() => import("../pages/homePage"));
 const AboutUsPage = React.lazy(() => import("../pages/aboutUsPage"));
+const ProfilePage = React.lazy(() => import("../pages/PublicProfilePage/publicProfilepage"));
 
 export const ROUTE_PATH = {
   DEFAULT: "/",
@@ -15,7 +17,9 @@ export const ROUTE_PATH = {
   SIGNUP: "/signup",
   DASHBOARD: "/dashboard",
   DETAILS: "/details",
+  PROFILE:"/profile/:userId"
 };
+
 
 export const publicRoutes = [
   {
@@ -42,6 +46,7 @@ export const publicRoutes = [
   },
 ];
 
+
 export const privateRoute = [
   {
     path: "",
@@ -58,6 +63,10 @@ export const privateRoute = [
       {
         path: ROUTE_PATH.DETAILS,
         element: <DetailsPage/>,
+      },
+      {
+        path: ROUTE_PATH.PROFILE,
+        element: <ProfilePage/>,
       },
     ],
   },
