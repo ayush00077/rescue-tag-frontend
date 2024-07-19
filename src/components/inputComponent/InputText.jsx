@@ -1,9 +1,20 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-export default function InputText({ placeHolder, height, width, setInput }) {
+export default function InputText({
+  key,
+  placeHolder,
+  height,
+  width,
+  setInput,
+  multiline,
+  maxRows,
+  style
+}) {
   return (
     <TextField
+    id="outlined-textarea"
+      key={key}
       placeholder={placeHolder}
       onChange={(e) => setInput(e.target.value)}
       inputProps={{
@@ -12,8 +23,11 @@ export default function InputText({ placeHolder, height, width, setInput }) {
           paddingBottom: "1px",
           height: height,
           width: width,
+          ...style,
         },
       }}
+      multiline={multiline}
+      rows={maxRows}
     />
   );
 }
