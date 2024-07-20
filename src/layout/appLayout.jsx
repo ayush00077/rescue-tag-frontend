@@ -19,8 +19,9 @@ export default function AppLayout() {
             p: 4,
             marginTop: "40px",
             //marginLeft:"230px",
-            height: "80vh",
-            backgroundColor: "#FAFAFB",
+            height: "auto",
+            fill: "#000000",
+            backgroundColor: "#f5f5f5",
             color:"#000000"
           }}
           //sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
