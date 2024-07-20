@@ -3,20 +3,25 @@ import React from "react";
 
 export default function InputText({
   key,
-  placeHolder,
+  placeholder,
   height,
   width,
-  setInput,
+  handelChange,
   multiline,
   maxRows,
-  style
+  style,
+  hyperText,
+  disabled,
+  name,
+  value
 }) {
   return (
     <TextField
-    id="outlined-textarea"
+      name={name}
+      value={value}
       key={key}
-      placeholder={placeHolder}
-      onChange={(e) => setInput(e.target.value)}
+      placeholder={placeholder}
+      onChange={(e) => handelChange(e)}
       inputProps={{
         style: {
           paddingTop: "1px",
@@ -26,6 +31,8 @@ export default function InputText({
           ...style,
         },
       }}
+      
+      disabled={disabled}
       multiline={multiline}
       rows={maxRows}
     />

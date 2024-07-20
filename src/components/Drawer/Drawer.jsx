@@ -79,6 +79,7 @@ export default function DrawerComponent(props) {
               color: "#000000",
             }}
             to={text.link}
+            key={text.id}
           >
             <ListItem
               key={text.id}

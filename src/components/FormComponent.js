@@ -1,12 +1,14 @@
 import React from 'react'
 import InputText from './inputComponent/InputText'
 
-export default function FromComponent(props) {
+export default function FormComponent(props) {
+ 
   const FORM_JSON = {
     text : <InputText {...props} />,
-    autoComplete : <InputText {...props} />
+    // autoComplete : <InputText {...props} />
   }
+  
   return (
-    <>{FORM_JSON[props.type]}</>
+    <>{FORM_JSON[props.fieldType]}</>
   )
 }
