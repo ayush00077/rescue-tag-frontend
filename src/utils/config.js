@@ -8,5 +8,6 @@ export const PUBLIC_APIS = {
 };
 
 export const PROTECTED_APIS = {
-
+  GET_USER_DETAILS: BASE_URL + "/user/get-user-details",
+  SAVE_USER_DETAILS: BASE_URL + "/user/save-user-details",
 };

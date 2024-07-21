@@ -13,7 +13,8 @@ export default function InputText({
   hyperText,
   disabled,
   name,
-  value
+  value,
+  error
 }) {
   return (
     <TextField
@@ -35,6 +36,8 @@ export default function InputText({
       disabled={disabled}
       multiline={multiline}
       rows={maxRows}
+      error={error}
+      helperText={error ? error : hyperText}
     />
   );
 }
