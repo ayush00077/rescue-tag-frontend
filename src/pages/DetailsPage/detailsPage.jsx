@@ -6,11 +6,12 @@ import {
   Grid,
   Stack,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "./detailsPage.module.css";
 
 import FormComponent from "../../components/FormComponent";
 import CustomButton from "../../components/CustomButton/customButton";
+import { getUserDetails } from "../../api/userAPI";
 
 const DetailsFormJson = {
   formElements: [
@@ -22,11 +23,17 @@ const DetailsFormJson = {
           name: "name",
           type: "text",
           placeholder: "Please Enter your Name",
+          validationType: "string",
+          minlength: 3,
+          maxlength: 20,
           required: true,
           disabled: false,
+
           style: {
             width: "250px",
             height: "27px",
+
+            fontSize: "14px",
           },
         },
         {
@@ -34,11 +41,15 @@ const DetailsFormJson = {
           type: "text",
           name: "localName",
           placeholder: "Please Enter your Local Name",
+          validationType: "string",
+          minlength: 3,
+          maxlength: 20,
           required: false,
           disabled: false,
           style: {
             width: "250px",
             height: "27px",
+            fontSize: "14px",
           },
         },
         {
@@ -46,11 +57,13 @@ const DetailsFormJson = {
           name: "email",
           type: "text",
           placeholder: "Please Enter your Email",
+          validationType: "email",
           required: true,
           disabled: false,
           style: {
             width: "250px",
             height: "27px",
+            fontSize: "14px",
           },
         },
         {
@@ -58,11 +71,15 @@ const DetailsFormJson = {
           name: "userName",
           type: "text",
           placeholder: "Please Enter your User Name",
+          validationType: "string",
+          minlength: 3,
+          maxlength: 20,
           required: true,
           disabled: false,
           style: {
             width: "250px",
             height: "27px",
+            fontSize: "14px",
           },
         },
       ],
@@ -75,11 +92,13 @@ const DetailsFormJson = {
           type: "text",
           name: "primaryNumber",
           placeholder: "Please Enter your Primary Number",
+          validationType: "number",
           required: true,
           disabled: false,
           style: {
             width: "250px",
             height: "27px",
+            fontSize: "14px",
           },
         },
         {
@@ -87,23 +106,31 @@ const DetailsFormJson = {
           type: "text",
           name: "state",
           placeholder: "Please Enter your State",
-          required: false,
+          validationType: "string",
+          minlength: 3,
+          maxlength: 20,
+          required: true,
           disabled: false,
           style: {
             width: "250px",
             height: "27px",
+            fontSize: "14px",
           },
         },
         {
           label: "Country",
           type: "text",
-          name:"country",
+          name: "country",
           placeholder: "Please Enter your Country",
-          required: false,
+          validationType: "string",
+          minlength: 3,
+          maxlength: 20,
+          required: true,
           disabled: false,
           style: {
             width: "250px",
             height: "27px",
+            fontSize: "14px",
           },
         },
         {
@@ -111,11 +138,15 @@ const DetailsFormJson = {
           type: "text",
           name: "city",
           placeholder: "Please Enter your City",
-          required: false,
+          validationType: "string",
+          minlength: 3,
+          maxlength: 20,
+          required: true,
           disabled: false,
           style: {
             width: "250px",
             height: "27px",
+            fontSize: "14px",
           },
         },
         {
@@ -123,23 +154,32 @@ const DetailsFormJson = {
           name: "pinCode",
           type: "text",
           placeholder: "Please Enter your Pin Code",
+          validationType: "number",
           required: false,
           disabled: false,
           style: {
             width: "250px",
             height: "27px",
+            fontSize: "14px",
           },
         },
         {
           label: "Address",
           name: "address",
           type: "text",
+          multiline: true,
+          maxRows: 4,
           placeholder: "Please Enter your Address",
-          required: false,
+          validationType: "string",
+          minlength: 3,
+          maxlength: 100,
+          required: true,
           disabled: false,
           style: {
+            padding: "0px",
             width: "250px",
-            height: "27px",
+            height: "50px",
+            fontSize: "14px",
           },
         },
       ],
@@ -150,17 +190,52 @@ const DetailsFormJson = {
 export default function DetailsPage() {
   const [formDatas, setFormData] = useState({});
   const [error, setError] = useState({});
-  const handleValidation = () =>{
-    return true
-  }
+
+  useEffect(() => {
+    //API call to get user details
+    const userDetails = async () => {
+      try {
+        const userDetails = await getUserDetails();
+        console.log(userDetails,"user details....");
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    userDetails();
+  }, []);
+
+  const handleValidation = () => {
+    let formIsValid = true;
+    let error = {};
+    DetailsFormJson.formElements.map((section) => {
+      section.fields.map((field) => {
+        if (field?.required && !formDatas[field.name]) {
+          formIsValid = false;
+          error[field.name] = "Field is required";
+          // if (
+          //   field?.validationType === "string" &&
+          //   (formDatas[field.name].length < field.minlength ||
+          //     formDatas[field.name].length > field.maxlength)
+          // ) {
+          //   formIsValid = false;
+          //   error[
+          //     field.name
+          //   ] = `value should be between ${field.minlength} and ${field.maxlength} characters`;
+          // }
+        }
+      });
+    });
+    setError(error);
+    return formIsValid;
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target ,"form data");
-    if(handleValidation()){
-      console.log(formDatas)
+    console.log(e.target, "form data");
+    if (handleValidation()) {
+      console.log(formDatas);
     }
-  }
-  const handelChange = (e) => { 
+  };
+  const handelChange = (e) => {
     const { name, value, type, checked } = e.target;
     console.log(name, value, type, checked);
     if (type === "checkbox" || type === "radio") {
@@ -171,7 +246,7 @@ export default function DetailsPage() {
       setFormData({ ...formDatas, [name]: value });
     }
   };
- 
+
   return (
     <form onSubmit={handleSubmit}>
       <Stack>
@@ -189,7 +264,13 @@ export default function DetailsPage() {
                   <Grid item xs key={index}>
                     <div className={style.input_field}>
                       <div className={style.input_title}>{field.label}</div>
-                       <FormComponent fieldType={field.type} {...field} handelChange={handelChange} value={formDatas[field.name]||""}/>
+                      <FormComponent
+                        fieldType={field.type}
+                        {...field}
+                        handelChange={handelChange}
+                        value={formDatas[field.name] || ""}
+                        error={error[field.name]}
+                      />
                     </div>
                   </Grid>
                 ))}
@@ -198,9 +279,11 @@ export default function DetailsPage() {
           </Card>
         ))}
       </Stack>
-      <div style={{ float: "right"}}>
-          <CustomButton type={"submit"} style={{width:"100px"}}>Save</CustomButton>
-        </div>
+      <div style={{ float: "right" }}>
+        <CustomButton type={"submit"} style={{ width: "100px" }}>
+          Save
+        </CustomButton>
+      </div>
     </form>
   );
 }
