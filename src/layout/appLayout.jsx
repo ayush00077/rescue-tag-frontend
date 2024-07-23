@@ -4,6 +4,7 @@ import { Outlet } from "react-router-dom";
 import DrawerComponent from "../components/Drawer/Drawer";
 import BreadCrumb from "../components/BreadCrumb";
 import { DRAWER_WIDTH } from "../constants/constant";
+import SnackBarComponent from "../components/AlertComponents/SnackBarComponent";
 
 export default function AppLayout() {
   console.log("AppLayout.................................")
@@ -12,6 +13,7 @@ export default function AppLayout() {
     <div className="main">
       <Box sx={{ display: "flex" }}>
         <DrawerComponent />
+        <SnackBarComponent/>
         <Box
           component="main"
           sx={{
