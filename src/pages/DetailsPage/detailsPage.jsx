@@ -6,12 +6,15 @@ import {
   Grid,
   Stack,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import style from "./detailsPage.module.css";
 
 import FormComponent from "../../components/FormComponent";
 import CustomButton from "../../components/CustomButton/customButton";
-import { getUserDetails } from "../../api/userAPI";
+import { getUserDetails, saveUserDetails } from "../../api/userAPI";
+import { useDispatch } from "react-redux";
+import { setMessage } from "../../redux/reducers/msgSlice";
+
 
 const DetailsFormJson = {
   formElements: [
@@ -39,7 +42,7 @@ const DetailsFormJson = {
         {
           label: "Local Name",
           type: "text",
-          name: "localName",
+          name: "nickName",
           placeholder: "Please Enter your Local Name",
           validationType: "string",
           minlength: 3,
@@ -59,7 +62,7 @@ const DetailsFormJson = {
           placeholder: "Please Enter your Email",
           validationType: "email",
           required: true,
-          disabled: false,
+          disabled: true,
           style: {
             width: "250px",
             height: "27px",
@@ -75,7 +78,7 @@ const DetailsFormJson = {
           minlength: 3,
           maxlength: 20,
           required: true,
-          disabled: false,
+          disabled: true,
           style: {
             width: "250px",
             height: "27px",
@@ -90,7 +93,7 @@ const DetailsFormJson = {
         {
           label: "Primary Number",
           type: "text",
-          name: "primaryNumber",
+          name: "number",
           placeholder: "Please Enter your Primary Number",
           validationType: "number",
           required: true,
@@ -151,7 +154,7 @@ const DetailsFormJson = {
         },
         {
           label: "Pin Code",
-          name: "pinCode",
+          name: "zipCode",
           type: "text",
           placeholder: "Please Enter your Pin Code",
           validationType: "number",
@@ -190,13 +193,34 @@ const DetailsFormJson = {
 export default function DetailsPage() {
   const [formDatas, setFormData] = useState({});
   const [error, setError] = useState({});
+  const dispatch = useDispatch();
+
+  // Form Api
+  useLayoutEffect(() => { }, []);
 
   useEffect(() => {
     //API call to get user details
     const userDetails = async () => {
       try {
-        const userDetails = await getUserDetails();
-        console.log(userDetails,"user details....");
+        let userDetails = await getUserDetails();
+        console.log(userDetails.data,"user details....");
+        if(userDetails.status === 200){
+          let details = userDetails.data;
+          const userObj = {}
+          userObj.name = details?.name || "";
+          userObj.nickName = details?.nickName || "";
+          userObj.email = details?.email || "";
+          userObj.userName = details?.userName || "";
+          userObj.number = details?.number || "";
+          userObj.city = details?.city || "";
+          userObj.country = details?.country;
+          userObj.address = details?.address;
+          userObj.state = details?.state || "";
+          userObj.zipCode = details?.zipCode || "";
+          setFormData(userObj);
+        }else{
+          console.log("error in fetching user details");
+        }
       } catch (err) {
         console.log(err);
       }
@@ -228,11 +252,34 @@ export default function DetailsPage() {
     setError(error);
     return formIsValid;
   };
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(e.target, "form data");
     if (handleValidation()) {
       console.log(formDatas);
+      //API call to save user details
+      try {
+        let response = await saveUserDetails(formDatas);
+        if(response.status === 200){
+          dispatch(
+            setMessage({
+              type: "success",
+              msg: "User details saved successfully",
+              statusCode: response.status,
+            })
+          )
+        }else{
+           dispatch(
+            setMessage({
+              type: "error",
+              msg: response.data.message,
+              statusCode: response.status,
+            }))
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   const handelChange = (e) => {
@@ -264,6 +311,7 @@ export default function DetailsPage() {
                   <Grid item xs key={index}>
                     <div className={style.input_field}>
                       <div className={style.input_title}>{field.label}</div>
+                      {console.log(formDatas[field.name],"jhjkhj")}
                       <FormComponent
                         fieldType={field.type}
                         {...field}
